@@ -1,0 +1,30 @@
+{
+  "rules": {
+    "presence": {
+      "$userId": {
+        ".read": true,
+        ".write": true,
+        ".validate": "newData.hasChildren(['id', 'username', 'joinedAt', 'lastSeen', 'roomId'])"
+      }
+    },
+    "rooms": {
+      "$roomId": {
+        "messages": {
+          ".read": true,
+          ".write": true,
+          "$messageId": {
+            ".validate": "newData.hasChildren(['userId', 'username', 'text', 'timestamp', 'type']) && newData.child('text').val().length <= 280"
+          }
+        }
+      }
+    },
+    "environment": {
+      ".read": true,
+      ".write": "auth != null || true"
+    },
+    "hidden_rooms": {
+      ".read": true,
+      ".write": true
+    }
+  }
+}
